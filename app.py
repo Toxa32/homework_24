@@ -29,3 +29,7 @@ def perform_query():
         abort(404, 'Nothing was found')
 
     return app.response_class(result, content_type="text/plain")
+
+
+if __name__ == '__main__':
+    app.run()
