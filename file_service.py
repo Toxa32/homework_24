@@ -97,7 +97,7 @@ class FileService:
 
         return ''.join(result)
 
-    def _get_source(self) -> TextIO | Iterable:
+    def _get_source(self):
         """This method serves to choose the source to receive data from
 
         :return: TextIO object or Iterable depending on it was a first query

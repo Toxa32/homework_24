@@ -6,7 +6,7 @@ app = Flask(__name__)
 # ------------------------------------------------------------------------
 
 
-@app.route("/perform_query/", methods=['POST'])
+@app.route("/perform_query/", methods=['GET'])
 def perform_query():
     """This function is a view to work with route /perform_query/ with
     different query parameters
