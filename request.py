@@ -23,7 +23,6 @@ class Request:
 
         :return: the result string of the request execution
         """
-        self._create(**kwargs)
         task_1, value_1, task_2, value_2 = self._create(**kwargs)
 
         query_1 = f"self.service.{task_1}(value_1)"
