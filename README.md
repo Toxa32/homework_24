@@ -26,5 +26,7 @@ The project's structure:
  - mypy.ini - configuration of mypy
  - app.py - a main file to start the application
  - README.md - this file with app info
+ - data - the folder with log file to get data from
+ - .gitignore - file with folders and files to exclude from the repository
  ---
  The project was created in 02 January 2023 by Aleksey Mavrin
