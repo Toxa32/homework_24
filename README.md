@@ -1,4 +1,4 @@
-## Homework 23
+## Homework 24
 This application emulates command line functions to get data from file. 
 
 There're some parameters you can use in the app:
