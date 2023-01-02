@@ -1,7 +1,7 @@
 """This file contains a FileService class providing a business logic to work
 with user's requests"""
-from typing import TextIO, Iterable
-from flask import abort
+import re
+from typing import Optional, Any, Iterable, TextIO
 from file_dao import FileDao
 # ---------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ class FileService:
     def __init__(self, dao: FileDao) -> None:
         """Initialization of the FileService"""
         self._dao = dao
-        self._result = None
+        self._result: Optional[Iterable | Any] = None
 
     def add_new_file(self, filename: str) -> None:
         """This method adds a new filename into Dao
@@ -29,25 +29,36 @@ class FileService:
         """
         data = self._get_source()
 
-        self._result = filter(lambda x: value.lower() in x.lower(), data)
+        self._result = filter(lambda x: value in x, data)
 
-    def map(self, column: str) -> None:
+    def filter_by_regex(self, regex: str) -> None:
+        """This method serves to process a request to filter data by the given
+        regular expression
+
+        :param regex: string containing a regular expression to filter
+        """
+        data = self._get_source()
+        re_validator = re.compile(regex)
+
+        self._result = filter(lambda x: bool(re_validator.search(x)), data)
+
+    def map(self, value: str) -> None:
         """This method serves to process a request for mapping data
 
-        :param column: string containing a column number to receive. All
+        :param value: string containing a column number to receive. All
         strings in file will be split by the space
         """
         data = self._get_source()
 
         try:
-            column = int(column)
+            column = int(value)
 
         except ValueError:
             column = 0
 
         self._result = map(lambda x: x.split(' ')[column] + '\n', data)
 
-    def unique(self, value = None) -> None:
+    def unique(self, value: Optional[Any] = None) -> None:
         """This method serves to process a request to get unique data
 
         :param value: do nothing in this occasion and was added to provide
@@ -78,12 +89,12 @@ class FileService:
         data = self._get_source()
 
         try:
-            value = int(value)
+            amount = int(value)
 
         except ValueError:
-            value = 1
+            amount = 1
 
-        limited = list(data)[:value]
+        limited = list(data)[:amount]
 
         self._result = iter(limited)
 
@@ -92,19 +103,21 @@ class FileService:
 
         :return: string containing the result of whole request
         """
-        result = self._result
-        self._result = None
+        if self._result:
+            result = ''.join(self._result)
+            self._result = None
+            return result
 
-        return ''.join(result)
+        return ''
 
-    def _get_source(self):
+    def _get_source(self) -> Iterable | TextIO:
         """This method serves to choose the source to receive data from
 
         :return: TextIO object or Iterable depending on it was a first query
         request or not
         """
         if self._result is None:
-            data = self._dao.open()
+            data: Iterable | TextIO = self._dao.open()
 
         else:
             data = self._result

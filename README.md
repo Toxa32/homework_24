@@ -8,6 +8,7 @@ There're some parameters you can use in the app:
  - sort - sorts all strings by ascending or descending order
  - unique - returns only unique strings
  - limit - returns certain amount of file strings
+ - regex - serves to filter result by provided regular expression
  
 To get correct result you need to adhere to following rules:
 1. Use this query format cmd1={method}&value1={value}&cmd2={method}&value2={value}&file={filename}
@@ -17,11 +18,13 @@ To get correct result you need to adhere to following rules:
 The project's structure: 
  - file_dao.py - DAO to work with files
  - file_service.py - a service with business logic
- - args_checker.py - ArgumentsChecker class to check if arguments is valid
+ - models.py - contains RequestArgs class to verify provided arguments
  - constants.py - there're file paths, mapping dict, etc
  - container.py - there're DAO, Service classes' and another instances
+ - request.py - Request class to execute user's request
  - requirements.txt - file with the project's dependencies
+ - mypy.ini - configuration of mypy
  - app.py - a main file to start the application
  - README.md - this file with app info
  ---
- The project was created in 22 December 2022 by Aleksey Mavrin
+ The project was created in 02 January 2023 by Aleksey Mavrin

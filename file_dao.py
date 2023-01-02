@@ -1,7 +1,7 @@
 """This file contains a FileDao class providing access to the file with
 data"""
 import os
-from typing import TextIO
+from typing import TextIO, Optional
 from constants import DATA_DIR
 # ---------------------------------------------------------------------------
 
@@ -14,8 +14,8 @@ class FileDao:
         _filename - a name of file to open. It should be in the data folder
         _file - TextIO object to read data from
         """
-        self._filename = None
-        self._file: TextIO = None
+        self._filename: str = ''
+        self._file: Optional[TextIO] = None
 
     def add_filename(self, filename: str) -> None:
         """This method adds a filename to the FileDao field
@@ -29,7 +29,7 @@ class FileDao:
 
         :returns: a TextIO object to get data from
         """
-        if self._file is not None and not self._file.closed:
+        if self._file and not self._file.closed:
             self._close()
 
         fin = open(self._filename, encoding='utf-8')
@@ -40,7 +40,8 @@ class FileDao:
     def _close(self) -> None:
         """This is a closed method serving to close TextIO object after
         using"""
-        self._file.close()
+        if self._file:
+            self._file.close()
 
     def __repr__(self) -> str:
         """Representation of the FileDao class"""
@@ -50,5 +51,5 @@ class FileDao:
         """Destructor of the FileDao class to close file if application finish
         its work"""
 
-        if self._file is not None:
+        if self._file:
             self._close()
